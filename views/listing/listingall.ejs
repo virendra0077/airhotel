@@ -1,0 +1,150 @@
+<% layout("/layout/boilerplate.ejs") %>
+
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+   
+  }
+ .filter{
+ text-align: center;
+ margin-right: 3.5rem;
+ margin-top: 1rem;
+ opacity: 0.7;
+ }
+ .filter:hover{
+   opacity: 1;
+   cursor: pointer;
+ }
+ .filter p{
+   font-size: 0.8rem;
+ }
+ .tax-switch{
+  opacity: 0.9;
+  font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #d3d5d7;
+    border-radius: 0.25rem;
+ }
+</style>
+
+  <div id="filters">
+    <div class="filter">
+      <div> <i class="fa-solid fa-globe"></i></div>
+      <p>All</p>
+    </div>
+   
+    <!-- <div class="filter">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </div> -->
+    
+    <div class="filter">
+      <div> <i class="fa-solid fa-water-ladder"></i></div>
+      <p>Pools</p>
+    </div>
+   
+    <div class="filter">
+      <div><i class="fa-solid fa-person-walking"></i></div>
+      <p>Trekking</p>
+    </div>
+    <div class="filter">
+      <div> <i class="fa-solid fa-umbrella-beach"></i></div>
+      <p>Beaches</p>
+    </div>
+   
+    <div class="filter">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </div>
+
+    <div class="filter">
+      <div> <i class="fa-solid fa-dungeon"></i></div>
+      <p>Castles</p>
+    </div>
+   
+    <div class="filter">
+      <div><i class="fa-solid fa-igloo"></i></div>
+      <p>Igloo</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-person-snowboarding"></i></div>
+      <p>Snowboarding</p>
+    </div>
+   
+    <div class="filter">
+      <div><i class="fa-solid fa-tents"></i></div>
+      <p>Camping</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-mountain-sun"></i></div>
+      <p>Mountain</p>
+    </div>
+    <div class="tax-switch">
+    <div class="form-check form-switch form-check-reverse">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+      <label class="form-check-label" for="flexSwitchCheckDefault"><b>Display total after taxes</b></label>
+    </div>
+  </div>
+  </div>
+ 
+  
+    
+    <hr>
+    <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 mt-3">
+    <% for (let list of lists) { %>
+      <a href="/listings/<%=list._id%>" class="a-link">
+    <div class="card card-listing" style="width: 18rem;">
+      <img src="<%=list.image.url%>" class="card-img-top" style="height: 16rem;" alt="image">
+      <div class="card-body">
+        <p class="card-text mt-2"><b><%= list.title %></b></p>  <hr>
+        <p class="card-text" id="price">Price: &#8377; <%= list.price
+             %> /night </p>
+           
+              <p class="card-text"> Country: <%= list.country%> </p> <hr>
+    </div>
+    
+    </div>
+  </a>
+    <% } %> 
+  </div>
+
+
+  <script>
+   let taxswitch = document.getElementById("flexSwitchCheckDefault");
+
+taxswitch.addEventListener("change", function() {
+  let cards = document.querySelectorAll(".card-listing");
+  cards.forEach(card => {
+    let priceElement = card.querySelector("#price");
+    let originalPrice = priceElement.getAttribute("data-original-price");
+
+    if (!originalPrice) {
+      originalPrice = priceElement.innerText.match(/\d+/g)[0]; // Extract numeric part
+      priceElement.setAttribute("data-original-price", originalPrice);
+    }
+
+    let priceNumInt = parseInt(originalPrice);
+
+    if (taxswitch.checked) {
+      let tax = priceNumInt * 0.18;
+      let total = priceNumInt + tax;
+      let final = Math.round(total);
+      priceElement.innerText = `Price: ₹ ${final} /night (taxes included)`;
+    } else {
+      priceElement.innerText = `Price: ₹ ${priceNumInt} /night + taxes`;
+    }
+  });
+});
+  </script>
+      <!-- .toLocaleString("en-IN") -->
+
+
+<!-- 
+      class="row row-cols-xxl-5 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 mt-2"
+
+      " " -->
