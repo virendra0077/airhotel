@@ -112,7 +112,7 @@ app.use("/", usersRouter );
 
 
 app.get("/" , (req, res) => {
-    res.send("hello , I am root")
+    res.redirect("/listings");
 });
 app.use("*" , (req,res,next) => {
     next(new ExpressError(404,"Error 404 Page Not Found!"));
